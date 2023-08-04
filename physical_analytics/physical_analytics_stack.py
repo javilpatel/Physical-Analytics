@@ -40,8 +40,8 @@ class PhysicalAnalyticsStack(Stack):
             enabled=True,
             transitions=[
                 _s3.Transition(
-                    storage_class=_s3.StorageClass.INTELLIGENT_TIERING, # .GLACIER
-                    transition_after=Duration.days(1) # increase days 
+                    storage_class=_s3.StorageClass.GLACIER,
+                    transition_after=Duration.days(14) 
                 ),
             ],
             )
@@ -63,9 +63,9 @@ class PhysicalAnalyticsStack(Stack):
         # function to send data from s3 to kinesis in batches which simlaties streaming
         function = _lambda.Function(self, 'lambda_function', 
             runtime=_lambda.Runtime.PYTHON_3_7, 
-            handler='json-producer.lambda_handler', 
+            handler='json_producer.lambda_handler', 
             code=_lambda.Code.from_asset('./lambda'),
-            memory_size=10240, 
+            memory_size=8240, 
             timeout= Duration.minutes(15))
 
         # trigger for when file is stored in s3 and send it to data streams

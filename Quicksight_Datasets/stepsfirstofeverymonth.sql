@@ -1,0 +1,1 @@
+ifelse(Date = truncDate('MM', Date) , 'yes' , 'no')
